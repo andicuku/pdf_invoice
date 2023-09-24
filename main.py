@@ -4,7 +4,7 @@ from utils import extract_spv, extract_address, extract_description, extract_tot
     extract_date, dump_dict_to_excel
 
 
-def prepare_date(text: str) -> dict:
+def prepare_dictionary_with_data(text: str) -> dict:
     return {
         "Reference Date": extract_date(text),
         "SPV": extract_spv(text),
@@ -19,10 +19,11 @@ def prepare_date(text: str) -> dict:
 
 def main():
     with PDF.open("pdf_directory/test.pdf") as pdf:
-        dump_dict_to_excel(prepare_date(pdf.pages[0].extract_text()), f'reports/{pdf.path.name}.xlsx')
+        dump_dict_to_excel(prepare_dictionary_with_data(pdf.pages[0].extract_text()), f'reports/{pdf.path.name}.xlsx')
 
     with PDF.open("pdf_directory/test_1.pdf") as pdf:
-        dump_dict_to_excel(prepare_date(pdf.pages[0].extract_text()), f'reports/{pdf.path.name}.xlsx')
+        dump_dict_to_excel(prepare_dictionary_with_data(pdf.pages[0].extract_text()), f'reports/{pdf.path.name}.xlsx')
 
 
-main()
+if __name__ == '__main__':
+    main()

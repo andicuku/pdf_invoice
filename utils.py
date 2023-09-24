@@ -83,12 +83,14 @@ def extract_date(text: str) -> str:
         return str(parser.parse(date).date())
 
 
-def extract_total(text: str, position: int) -> float:
+def extract_total(text: str, position: int) -> float | None:
     amount_pattern = r'\b\d{1,3}(?:[,.]\d{3})*(?:,\d{2})?\b'
-    amounts = re.findall(amount_pattern, text)
-    amounts = set(amounts)
+    amounts = set(re.findall(amount_pattern, text))
     amounts = sorted([safe_float(amount) for amount in amounts if safe_float(amount) is not None], reverse=True)
-    return amounts[position]
+    try:
+        return amounts[position]
+    except IndexError:
+        return
 
 
 def dump_dict_to_excel(data: dict, filename: str):
