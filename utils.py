@@ -93,8 +93,9 @@ def extract_total(text: str, position: int) -> float | None:
         return
 
 
-def dump_dict_to_excel(data: dict, filename: str):
+def dump_dict_to_excel(list_of_data: list, filename: str):
     """Dump dictionary to Excel file"""
     import pandas as pd
-    df = pd.DataFrame(data, index=[0])
+
+    df = pd.DataFrame(list_of_data)
     df.to_excel(filename, index=False)

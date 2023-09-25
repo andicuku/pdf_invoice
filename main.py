@@ -1,3 +1,5 @@
+import os
+
 from pdfplumber.pdf import PDF
 
 from utils import extract_spv, extract_address, extract_description, extract_total, \
@@ -18,11 +20,16 @@ def prepare_dictionary_with_data(text: str) -> dict:
 
 
 def main():
-    with PDF.open("pdf_directory/test.pdf") as pdf:
-        dump_dict_to_excel(prepare_dictionary_with_data(pdf.pages[0].extract_text()), f'reports/{pdf.path.name}.xlsx')
+    pdfs = ['test.pdf', 'test_1.pdf']
+    list_of_data = []
+    for pdf in pdfs:
+        with PDF.open(f"pdf_directory/{pdf}") as pdf:
+            list_of_data.append(prepare_dictionary_with_data(pdf.pages[0].extract_text()))
 
-    with PDF.open("pdf_directory/test_1.pdf") as pdf:
-        dump_dict_to_excel(prepare_dictionary_with_data(pdf.pages[0].extract_text()), f'reports/{pdf.path.name}.xlsx')
+    if not os.path.isdir("reports"):
+        os.mkdir("reports")
+
+    dump_dict_to_excel(list_of_data, "reports/pdf_to_excel.xlsx")
 
 
 if __name__ == '__main__':
